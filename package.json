@@ -1,0 +1,30 @@
+{
+  "name": "@threejs/elements",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "ThreeJs basic elements",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobakCode/-threejs-elements.git"
+  },
+  "author": "Paweł Robak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RobakCode/-threejs-elements/issues"
+  },
+  "homepage": "https://github.com/RobakCode/-threejs-elements#readme",
+  "dependencies": {
+    "three": "^0.161.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.161.2",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4"
+  }
+}
