@@ -8,20 +8,23 @@ Repository with simple 3D elements.
 
 - src
   - elements
-    - city
+    - architecture
       - buildings
-      - roads
+        - basic // style
+          - home
+            - modules
+              - door.model.ts
+              - index.ts
+            - home.model.ts
+            - index.ts
+          - garage
+            - garage.model.ts
+            - index.ts
     - nature
-      - trees
-      - rocks
+      - ...
     - animals
-      - cow
-      - dog
-      - horse
+      - ...
     - characters
-      - humans
-      - creatures
+      - ...
     - vehicles
-      - cars
-      - trains
-      - boats
+      - ...
