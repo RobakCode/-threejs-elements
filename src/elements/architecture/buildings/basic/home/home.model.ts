@@ -3,11 +3,14 @@ import * as THREE from "three";
 import { defaultMeasure } from "../../../../../settings/defaultMeasure";
 import { HomeModelProps } from "./home.types";
 
+import { DoorModel } from "./models";
+
 export const homeModel = (props: HomeModelProps) => {
   const { defaultMeasure: defaultDM = defaultMeasure } = props || {};
   const dm = (value: number) => defaultDM * value;
 
   const homeGroup = new THREE.Group();
+  const doorModel = new DoorModel();
 
   const defaultMaterial = new THREE.MeshMatcapMaterial({
     color: "white",
@@ -65,75 +68,8 @@ export const homeModel = (props: HomeModelProps) => {
 
   /**
    * Door
-   * right top and left top corner are rounded
    */
-  const doorFrame = new THREE.Shape();
-  doorFrame.moveTo(dm(-1), dm(1.5));
-  doorFrame.lineTo(dm(-1), dm(-2));
-  doorFrame.lineTo(dm(1), dm(-2));
-  doorFrame.lineTo(dm(1), dm(1.5));
-  doorFrame.quadraticCurveTo(dm(1), dm(2), dm(0.5), dm(2));
-  doorFrame.lineTo(dm(-0.5), dm(2));
-  doorFrame.quadraticCurveTo(dm(-1), dm(2), dm(-1), dm(1.5));
-
-  const doorFrameHole = new THREE.Path();
-  doorFrameHole.moveTo(dm(-0.7), dm(-2));
-  doorFrameHole.lineTo(dm(-0.7), dm(1.4));
-  doorFrameHole.quadraticCurveTo(dm(-0.7), dm(1.7), dm(-0.5), dm(1.7));
-  doorFrameHole.lineTo(dm(0.5), dm(1.7));
-  doorFrameHole.quadraticCurveTo(dm(0.7), dm(1.7), dm(0.7), dm(1.4));
-  doorFrameHole.lineTo(dm(0.7), dm(-2));
-  doorFrame.holes.push(doorFrameHole);
-
-  const doorFrameExtrudeSettings = {
-    steps: dm(2),
-    depth: dm(0.025),
-    bevelEnabled: false,
-  };
-
-  const doorFrameGeometry = new THREE.ExtrudeGeometry(
-    doorFrame,
-    doorFrameExtrudeSettings
-  );
-  const doorFrameMaterial = new THREE.MeshMatcapMaterial({
-    color: "brown",
-    transparent: true,
-    opacity: 1,
-    depthWrite: true,
-    depthTest: true,
-  });
-  const doorFrameModel = new THREE.Mesh(doorFrameGeometry, doorFrameMaterial);
-  doorFrameModel.position.set(0, dm(-3), dm(0.025));
-  homeGroup.add(doorFrameModel);
-
-  /**
-   * Door
-   */
-  const door = new THREE.Shape();
-  door.moveTo(dm(-0.7), dm(-2));
-  door.lineTo(dm(-0.7), dm(1.4));
-  door.quadraticCurveTo(dm(-0.7), dm(1.7), dm(-0.5), dm(1.7));
-  door.lineTo(dm(0.5), dm(1.7));
-  door.quadraticCurveTo(dm(0.7), dm(1.7), dm(0.7), dm(1.4));
-  door.lineTo(dm(0.7), dm(-2));
-
-  const doorExtrudeSettings = {
-    steps: dm(2),
-    depth: dm(0.05),
-    bevelEnabled: false,
-  };
-
-  const doorGeometry = new THREE.ExtrudeGeometry(door, doorExtrudeSettings);
-  const doorMaterial = new THREE.MeshMatcapMaterial({
-    color: "black",
-    transparent: true,
-    opacity: 1,
-    depthWrite: true,
-    depthTest: true,
-  });
-  const doorModel = new THREE.Mesh(doorGeometry, doorMaterial);
-  doorModel.position.set(0, dm(-3), dm(0.025));
-  homeGroup.add(doorModel);
+  homeGroup.add(doorModel.getModel());
 
   /**
    * Windows

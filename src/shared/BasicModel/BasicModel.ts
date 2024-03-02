@@ -1,7 +1,10 @@
-export class BasicModel {
-  defaultMeasure: number = 1;
+import * as THREE from "three";
 
-  constructor(options: { defaultMeasure: number }) {
+export class BasicModel {
+  public model: THREE.Group = new THREE.Group();
+  private defaultMeasure: number = 1;
+
+  constructor(options: { defaultMeasure: number } = { defaultMeasure: 1 }) {
     this.defaultMeasure = options.defaultMeasure;
   }
 
