@@ -4,7 +4,42 @@ import { DoorModel, WindowModel } from "./models";
 import { BasicModel } from "@/shared";
 
 export class HomeModel extends BasicModel {
-  private doorModel = new DoorModel();
+  private wallColor = new THREE.MeshMatcapMaterial({
+    color: 0xffcc39,
+    transparent: true,
+    opacity: 1,
+    depthWrite: true,
+    depthTest: true,
+  });
+
+  private roofColor = new THREE.MeshMatcapMaterial({
+    color: 0x996633,
+    transparent: true,
+    opacity: 1,
+    depthWrite: true,
+    depthTest: true,
+  });
+
+  private doorColor = new THREE.MeshMatcapMaterial({
+    color: 0x663300,
+    transparent: true,
+    opacity: 1,
+    depthWrite: true,
+    depthTest: true,
+  });
+
+  private doorFrameColor = new THREE.MeshMatcapMaterial({
+    color: 0x996633,
+    transparent: true,
+    opacity: 1,
+    depthWrite: true,
+    depthTest: true,
+  });
+
+  private doorModel = new DoorModel({
+    frameMaterial: this.doorFrameColor,
+    doorMaterial: this.doorColor,
+  });
   private windowLeftModel = new WindowModel();
   private windowRightModel = new WindowModel();
 
@@ -14,7 +49,8 @@ export class HomeModel extends BasicModel {
       this.dm(10),
       this.dm(0.025)
     );
-    const frontWallModel = new THREE.Mesh(frontWallGeometry, this.material);
+
+    const frontWallModel = new THREE.Mesh(frontWallGeometry, this.wallColor);
     frontWallModel.position.set(0, 0, 0);
 
     return frontWallModel;
@@ -26,7 +62,7 @@ export class HomeModel extends BasicModel {
       this.dm(10),
       this.dm(0.025)
     );
-    const backWallModel = new THREE.Mesh(backWallGeometry, this.material);
+    const backWallModel = new THREE.Mesh(backWallGeometry, this.wallColor);
     backWallModel.position.set(0, 0, this.dm(-8));
 
     return backWallModel;
@@ -38,7 +74,7 @@ export class HomeModel extends BasicModel {
       this.dm(10),
       this.dm(8)
     );
-    const sideWallModel = new THREE.Mesh(sideWallGeometry, this.material);
+    const sideWallModel = new THREE.Mesh(sideWallGeometry, this.wallColor);
 
     return sideWallModel;
   }
@@ -63,7 +99,7 @@ export class HomeModel extends BasicModel {
       this.dm(2),
       4
     );
-    const roofConeModel = new THREE.Mesh(roofConeGeometry, this.material);
+    const roofConeModel = new THREE.Mesh(roofConeGeometry, this.roofColor);
     roofConeModel.position.set(0, this.dm(6), this.dm(-4));
     roofConeModel.rotation.y = Math.PI / 4;
 
@@ -125,6 +161,7 @@ export class HomeModel extends BasicModel {
     this.model.add(this.createWindowRight());
     this.model.add(this.createLeftSideWall());
     this.model.add(this.createRightSideWall());
+    this.model.position.set(0, 0, 0);
 
     return this.model;
   }

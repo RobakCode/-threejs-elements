@@ -36,7 +36,7 @@ export class WindowModel extends BasicModel {
     const windowGlassMaterial = new THREE.MeshMatcapMaterial({
       color: "lightblue",
       transparent: true,
-      opacity: 0.5,
+      opacity: 1,
       depthWrite: true,
       depthTest: true,
     });

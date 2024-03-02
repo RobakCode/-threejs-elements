@@ -3,6 +3,21 @@ import * as THREE from "three";
 import { BasicModel } from "@/shared/BasicModel/BasicModel";
 
 export class DoorModel extends BasicModel {
+  private frameMaterial: THREE.Material = this.material;
+  private doorMaterial: THREE.Material = this.material;
+
+  constructor(
+    modelOptions?: {
+      frameMaterial: THREE.Material;
+      doorMaterial: THREE.Material;
+    },
+    basicOptions: { defaultMeasure: number } = { defaultMeasure: 1 }
+  ) {
+    super(basicOptions);
+    this.frameMaterial = modelOptions?.frameMaterial || this.material;
+    this.doorMaterial = modelOptions?.doorMaterial || this.material;
+  }
+
   private createDoorFrame(): THREE.Mesh {
     const doorFrameShape = new THREE.Shape();
     doorFrameShape.moveTo(this.dm(-1), this.dm(1.5));
@@ -53,7 +68,10 @@ export class DoorModel extends BasicModel {
       doorFrameExtrudeSettings
     );
 
-    const doorFrameModel = new THREE.Mesh(doorFrameGeometry, this.material);
+    const doorFrameModel = new THREE.Mesh(
+      doorFrameGeometry,
+      this.frameMaterial
+    );
     doorFrameModel.position.set(0, 0, 0);
 
     return doorFrameModel;
@@ -89,7 +107,7 @@ export class DoorModel extends BasicModel {
       doorExtrudeSettings
     );
 
-    const doorModel = new THREE.Mesh(doorGeometry, this.material);
+    const doorModel = new THREE.Mesh(doorGeometry, this.doorMaterial);
     doorModel.position.set(0, 0, 0);
 
     return doorModel;

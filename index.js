@@ -16,7 +16,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   100,
   window.innerWidth / window.innerHeight,
-  0.1,
+  0.5,
   2000
 );
 
@@ -37,8 +37,8 @@ window.addEventListener("mousemove", ({ which, pageX }) => {
 /**
  * Default light
  */
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(0, 1, 0);
+const light = new THREE.SpotLight(0xffffff, 1);
+light.position.set(0, 1000, 0);
 light.castShadow = true;
 scene.add(light);
 
@@ -46,7 +46,15 @@ scene.add(light);
  * Create helper for light
  */
 const helper = new THREE.CameraHelper(light.shadow.camera);
-// scene.add(helper);
+scene.add(helper);
+
+/**
+ * Background
+ */
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load("./assets/background/0_bg.png");
+
+scene.background = new THREE.Color(0x003300);
 
 /**
  * Display imported model
