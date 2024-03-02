@@ -33,12 +33,23 @@ export class WindowModel extends BasicModel {
     windowGlassShape.lineTo(this.dm(0.1), this.dm(1.9));
     windowGlassShape.lineTo(this.dm(0.1), this.dm(0.1));
 
+    const windowGlassMaterial = new THREE.MeshMatcapMaterial({
+      color: "lightblue",
+      transparent: true,
+      opacity: 0.5,
+      depthWrite: true,
+      depthTest: true,
+    });
+
     const windowGlassGeometry = new THREE.ExtrudeGeometry(windowGlassShape, {
       depth: this.dm(0.05),
       bevelEnabled: false,
     });
 
-    const windowGlassModel = new THREE.Mesh(windowGlassGeometry, this.material);
+    const windowGlassModel = new THREE.Mesh(
+      windowGlassGeometry,
+      windowGlassMaterial
+    );
     windowGlassModel.position.set(0, 0, this.dm(0.025));
 
     return windowGlassModel;
