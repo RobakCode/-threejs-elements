@@ -102,14 +102,14 @@ export class HomeModel extends BasicModel {
 
   private createWindowLeft() {
     const windowLeft = this.windowLeftModel.getModel();
-    windowLeft.position.set(this.dm(-2.5), this.dm(2.5), this.dm(0.05));
+    windowLeft.position.set(this.dm(-3.25), this.dm(1.5), this.dm(0.05));
 
     return windowLeft;
   }
 
   private createWindowRight() {
     const windowRight = this.windowRightModel.getModel();
-    windowRight.position.set(this.dm(2.5), this.dm(2.5), this.dm(0.05));
+    windowRight.position.set(this.dm(1.25), this.dm(1.5), this.dm(0.05));
 
     return windowRight;
   }
