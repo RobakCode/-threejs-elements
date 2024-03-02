@@ -1,89 +1,131 @@
 import * as THREE from "three";
 
-import { defaultMeasure } from "../../../../../settings/defaultMeasure";
-import { HomeModelProps } from "./home.types";
-
 import { DoorModel, WindowModel } from "./models";
+import { BasicModel } from "@/shared";
 
-export const homeModel = (props: HomeModelProps) => {
-  const { defaultMeasure: defaultDM = defaultMeasure } = props || {};
-  const dm = (value: number) => defaultDM * value;
+export class HomeModel extends BasicModel {
+  private doorModel = new DoorModel();
+  private windowLeftModel = new WindowModel();
+  private windowRightModel = new WindowModel();
 
-  const homeGroup = new THREE.Group();
-  const doorModel = new DoorModel();
-  const windowLeftModel = new WindowModel();
-  const windowRightModel = new WindowModel();
+  private createFrontWall() {
+    const frontWallGeometry = new THREE.BoxGeometry(
+      this.dm(8),
+      this.dm(10),
+      this.dm(0.025)
+    );
+    const frontWallModel = new THREE.Mesh(frontWallGeometry, this.material);
+    frontWallModel.position.set(0, 0, 0);
 
-  const defaultMaterial = new THREE.MeshMatcapMaterial({
-    color: "white",
-    transparent: true,
-    opacity: 1,
-    depthWrite: true,
-    depthTest: true,
-  });
+    return frontWallModel;
+  }
 
-  /**
-   * Front and back walls
-   */
-  const frontWallGeometry = new THREE.BoxGeometry(dm(8), dm(10), dm(0.025));
-  const frontWallModel = new THREE.Mesh(frontWallGeometry, defaultMaterial);
-  frontWallModel.position.set(0, 0, 0);
-  homeGroup.add(frontWallModel);
+  private createBackWall() {
+    const backWallGeometry = new THREE.BoxGeometry(
+      this.dm(8),
+      this.dm(10),
+      this.dm(0.025)
+    );
+    const backWallModel = new THREE.Mesh(backWallGeometry, this.material);
+    backWallModel.position.set(0, 0, this.dm(-8));
 
-  const backWallModel = new THREE.Mesh(frontWallGeometry, defaultMaterial);
-  backWallModel.position.set(0, 0, dm(-8));
-  homeGroup.add(backWallModel);
+    return backWallModel;
+  }
 
-  /**
-   * Side walls
-   */
-  const sideWallGeometry = new THREE.BoxGeometry(dm(0.025), dm(10), dm(8));
-  const leftSideWallModel = new THREE.Mesh(sideWallGeometry, defaultMaterial);
-  leftSideWallModel.position.set(dm(-4), 0, dm(-4));
-  homeGroup.add(leftSideWallModel);
+  private createSideWall() {
+    const sideWallGeometry = new THREE.BoxGeometry(
+      this.dm(0.025),
+      this.dm(10),
+      this.dm(8)
+    );
+    const sideWallModel = new THREE.Mesh(sideWallGeometry, this.material);
 
-  const rightSideWallModel = new THREE.Mesh(sideWallGeometry, defaultMaterial);
-  rightSideWallModel.position.set(dm(4), 0, dm(-4));
-  homeGroup.add(rightSideWallModel);
+    return sideWallModel;
+  }
 
-  /**
-   * Roof and floor
-   */
-  const floorGeometry = new THREE.BoxGeometry(dm(8), dm(0.025), dm(8));
-  const floorModel = new THREE.Mesh(floorGeometry, defaultMaterial);
-  floorModel.position.set(0, dm(-5), dm(-4));
-  homeGroup.add(floorModel);
+  private createLeftSideWall() {
+    const leftSideWallModel = this.createSideWall();
+    leftSideWallModel.position.set(this.dm(-4), 0, this.dm(-4));
 
-  const roofGeometry = new THREE.BoxGeometry(dm(8), dm(0.025), dm(8));
-  const roofModel = new THREE.Mesh(roofGeometry, defaultMaterial);
-  roofModel.position.set(0, dm(5), dm(-4));
-  homeGroup.add(roofModel);
+    return leftSideWallModel;
+  }
 
-  /**
-   * Roof cone
-   */
-  const roofConeGeometry = new THREE.ConeGeometry(dm(6.8), dm(2), 4);
-  const roofConeModel = new THREE.Mesh(roofConeGeometry, defaultMaterial);
-  roofConeModel.position.set(0, dm(6), dm(-4));
-  roofConeModel.rotation.y = Math.PI / 4;
-  homeGroup.add(roofConeModel);
+  private createRightSideWall() {
+    const rightSideWallModel = this.createSideWall();
+    rightSideWallModel.position.set(this.dm(4), 0, this.dm(-4));
 
-  /**
-   * Door
-   */
-  const door = doorModel.getModel();
-  door.position.set(0, dm(-3), dm(0.025));
-  homeGroup.add(door);
+    return rightSideWallModel;
+  }
 
-  /**
-   * Windows
-   */
-  const windowLeft = windowLeftModel.getModel();
-  const windowRight = windowRightModel.getModel();
-  windowLeft.position.set(dm(-2.5), dm(2.5), dm(0.05));
-  windowRight.position.set(dm(2.5), dm(2.5), dm(0.05));
-  homeGroup.add(windowLeft);
-  homeGroup.add(windowRight);
+  private createRoofCone() {
+    const roofConeGeometry = new THREE.ConeGeometry(
+      this.dm(6.8),
+      this.dm(2),
+      4
+    );
+    const roofConeModel = new THREE.Mesh(roofConeGeometry, this.material);
+    roofConeModel.position.set(0, this.dm(6), this.dm(-4));
+    roofConeModel.rotation.y = Math.PI / 4;
 
-  return homeGroup;
-};
+    return roofConeModel;
+  }
+
+  private createFloor() {
+    const floorGeometry = new THREE.BoxGeometry(
+      this.dm(8),
+      this.dm(0.025),
+      this.dm(8)
+    );
+    const floorModel = new THREE.Mesh(floorGeometry, this.material);
+    floorModel.position.set(0, this.dm(-5), this.dm(-4));
+
+    return floorModel;
+  }
+
+  private createRoof() {
+    const roofGeometry = new THREE.BoxGeometry(
+      this.dm(8),
+      this.dm(0.025),
+      this.dm(8)
+    );
+    const roofModel = new THREE.Mesh(roofGeometry, this.material);
+    roofModel.position.set(0, this.dm(5), this.dm(-4));
+
+    return roofModel;
+  }
+
+  private createDoor() {
+    const door = this.doorModel.getModel();
+    door.position.set(0, this.dm(-3), this.dm(0.025));
+    return door;
+  }
+
+  private createWindowLeft() {
+    const windowLeft = this.windowLeftModel.getModel();
+    windowLeft.position.set(this.dm(-2.5), this.dm(2.5), this.dm(0.05));
+
+    return windowLeft;
+  }
+
+  private createWindowRight() {
+    const windowRight = this.windowRightModel.getModel();
+    windowRight.position.set(this.dm(2.5), this.dm(2.5), this.dm(0.05));
+
+    return windowRight;
+  }
+
+  public getModel() {
+    this.model.add(this.createFrontWall());
+    this.model.add(this.createBackWall());
+    this.model.add(this.createRoofCone());
+    this.model.add(this.createFloor());
+    this.model.add(this.createRoof());
+    this.model.add(this.createDoor());
+    this.model.add(this.createWindowLeft());
+    this.model.add(this.createWindowRight());
+    this.model.add(this.createLeftSideWall());
+    this.model.add(this.createRightSideWall());
+
+    return this.model;
+  }
+}

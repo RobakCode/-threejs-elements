@@ -2,7 +2,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { defaultRenderer } from "./src/renderer";
-import { homeModel } from "./src/elements";
+
+import { HomeModel } from "@/elements/architecture/buildings/basic";
 
 /**
  * Default scene
@@ -50,7 +51,7 @@ const helper = new THREE.CameraHelper(light.shadow.camera);
 /**
  * Display imported model
  */
-const hm = homeModel();
-scene.add(hm);
+const homeModel = new HomeModel();
+scene.add(homeModel.getModel());
 
 defaultRenderer.render(scene, camera);
