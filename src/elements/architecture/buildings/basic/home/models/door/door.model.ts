@@ -3,15 +3,6 @@ import * as THREE from "three";
 import { BasicModel } from "@/shared/BasicModel/BasicModel";
 
 export class DoorModel extends BasicModel {
-  public defaultMaterial: THREE.MeshMatcapMaterial =
-    new THREE.MeshMatcapMaterial({
-      color: "brown",
-      transparent: true,
-      opacity: 1,
-      depthWrite: true,
-      depthTest: true,
-    });
-
   private createDoorFrame(): THREE.Mesh {
     const doorFrameShape = new THREE.Shape();
     doorFrameShape.moveTo(this.dm(-1), this.dm(1.5));
@@ -62,11 +53,8 @@ export class DoorModel extends BasicModel {
       doorFrameExtrudeSettings
     );
 
-    const doorFrameModel = new THREE.Mesh(
-      doorFrameGeometry,
-      this.defaultMaterial
-    );
-    doorFrameModel.position.set(0, this.dm(-3), this.dm(0.025));
+    const doorFrameModel = new THREE.Mesh(doorFrameGeometry, this.material);
+    doorFrameModel.position.set(0, 0, 0);
 
     return doorFrameModel;
   }
@@ -100,14 +88,9 @@ export class DoorModel extends BasicModel {
       doorShape,
       doorExtrudeSettings
     );
-    const doorMaterial = new THREE.MeshMatcapMaterial({
-      color: "black",
-      transparent: true,
-      opacity: 1,
-    });
 
-    const doorModel = new THREE.Mesh(doorGeometry, doorMaterial);
-    doorModel.position.set(0, this.dm(-3), this.dm(0.025));
+    const doorModel = new THREE.Mesh(doorGeometry, this.material);
+    doorModel.position.set(0, 0, 0);
 
     return doorModel;
   }

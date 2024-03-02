@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { defaultMeasure } from "../../../../../settings/defaultMeasure";
 import { HomeModelProps } from "./home.types";
 
-import { DoorModel } from "./models";
+import { DoorModel, WindowModel } from "./models";
 
 export const homeModel = (props: HomeModelProps) => {
   const { defaultMeasure: defaultDM = defaultMeasure } = props || {};
@@ -11,6 +11,8 @@ export const homeModel = (props: HomeModelProps) => {
 
   const homeGroup = new THREE.Group();
   const doorModel = new DoorModel();
+  const windowLeftModel = new WindowModel();
+  const windowRightModel = new WindowModel();
 
   const defaultMaterial = new THREE.MeshMatcapMaterial({
     color: "white",
@@ -69,26 +71,19 @@ export const homeModel = (props: HomeModelProps) => {
   /**
    * Door
    */
-  homeGroup.add(doorModel.getModel());
+  const door = doorModel.getModel();
+  door.position.set(0, dm(-3), dm(0.025));
+  homeGroup.add(door);
 
   /**
    * Windows
    */
-  const windowGeometry = new THREE.BoxGeometry(dm(2), dm(2), dm(0.025));
-  const windowMaterial = new THREE.MeshMatcapMaterial({
-    color: "lightblue",
-    transparent: true,
-    opacity: 1,
-    depthWrite: true,
-    depthTest: true,
-  });
-  const leftWindowModel = new THREE.Mesh(windowGeometry, windowMaterial);
-  leftWindowModel.position.set(dm(-2.5), dm(2.5), dm(0.025));
-  homeGroup.add(leftWindowModel);
-
-  const rightWindowModel = new THREE.Mesh(windowGeometry, windowMaterial);
-  rightWindowModel.position.set(dm(2.5), dm(2.5), dm(0.025));
-  homeGroup.add(rightWindowModel);
+  const windowLeft = windowLeftModel.getModel();
+  const windowRight = windowRightModel.getModel();
+  windowLeft.position.set(dm(-2.5), dm(2.5), dm(0.05));
+  windowRight.position.set(dm(2.5), dm(2.5), dm(0.05));
+  homeGroup.add(windowLeft);
+  homeGroup.add(windowRight);
 
   return homeGroup;
 };

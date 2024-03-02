@@ -2,13 +2,20 @@ import * as THREE from "three";
 
 export class BasicModel {
   public model: THREE.Group = new THREE.Group();
-  private defaultMeasure: number = 1;
+  private measure: number = 1;
+  public material = new THREE.MeshMatcapMaterial({
+    color: "white",
+    transparent: true,
+    opacity: 1,
+    depthWrite: true,
+    depthTest: true,
+  });
 
   constructor(options: { defaultMeasure: number } = { defaultMeasure: 1 }) {
-    this.defaultMeasure = options.defaultMeasure;
+    this.measure = options.defaultMeasure;
   }
 
   public dm(value: number) {
-    return this.defaultMeasure * value;
+    return this.measure * value;
   }
 }
